@@ -1,0 +1,26 @@
+name: Copilot Error Check
+
+on:
+  workflow_dispatch:
+  
+permissions:
+  id-token: write
+  contents: read
+  
+jobs:
+  check-errors:
+    runs-on: self-hosted
+    steps:
+      # - name: Install Copilot CLI
+      #   uses: actions/setup-copilot@v0
+      #   with:
+      #     github-token: ${{ secrets.COPILOT_TOKEN }}
+
+      - name: Run Copilot query and print output
+        # env:
+        #   COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        run: |
+          set -e
+          OUTPUT=$(copilot -p "Always use the aggirigated span. Can you please find the unique error for last 1/2 days for mrportal-cps-mw in prod env.")
+          echo "$OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
