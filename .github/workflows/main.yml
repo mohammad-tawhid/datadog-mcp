@@ -38,8 +38,8 @@ jobs:
       #   #   cat summary.md >> "$GITHUB_STEP_SUMMARY"
       - name: Run Copilot query and print output
         env:
-          # COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-          # COPILOT_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+          COPILOT_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -e
