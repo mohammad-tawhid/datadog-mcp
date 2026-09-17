@@ -21,6 +21,6 @@ jobs:
         #   COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN }}
         run: |
           set -e
-          OUTPUT=$(copilot -p "Always use the aggirigated span. Can you please find the unique error for last 1/2 days for mrportal-cps-mw in prod env.")
+          OUTPUT=$(copilot -p "Always use the aggirigated span. Can you comapre the error, cpu, memory utilization between current version with the previous version of  mrportal-cps-mw in uat env. after that please share your verdit that we should proceed with this latest tag rollout to production, also share a comparison between two tags")
           echo "$OUTPUT"
           echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
