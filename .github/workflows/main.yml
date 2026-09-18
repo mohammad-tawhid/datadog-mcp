@@ -49,6 +49,7 @@ jobs:
           echo "$OUTPUT"
           echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
   final-approval:
+    needs: check-errors
     environment: rollout-approval
     runs-on: ubuntu-latest
     steps:
