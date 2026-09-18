@@ -11,7 +11,15 @@ env:
   GITHUB_ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
   DD_MCP_TOKEN: ${{ secrets.DD_PAT }}
 jobs:
+  image-build-errors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: image build
+        run: |
+          echo "this is image build"
+
   check-errors:
+    needs: image-build-errors
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,12 +38,6 @@ jobs:
             --header "Authorization: Bearer ${DD_MCP_TOKEN}" \
             datadog \
             "https://mcp.datadoghq.eu/v1/mcp?toolsets=core,apm"
-      # - name: Run Copilot CLI
-      #   env:
-      #     COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      #   # run: |
-      #   #   copilot -p "Review the git log for this repository and write a bullet point summary of all code changes that were made today, with links to the relevant commit on GitHub. Above the bullet list give a description (max 100 words) summarizing the changes made. Write the details to summary.md" -s --allow-tool='shell(git:*)' --allow-tool=write --no-ask-user
-      #   #   cat summary.md >> "$GITHUB_STEP_SUMMARY"
       - name: Run Copilot query and print output
         env:
           COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
@@ -46,3 +48,10 @@ jobs:
           OUTPUT=$(copilot -p "Always use the aggirigated span. Can you comapre the error, cpu, memory utilization between current version with the previous version of  mrportal-cps-mw in uat env. after that please share your verdit that we should proceed with this latest tag rollout to production, also share a comparison between two tags")
           echo "$OUTPUT"
           echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
+  final-approval:
+    environment: rollout-approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: final rollout
+        run: |
+          echo "this is final rollout"
