@@ -8,7 +8,7 @@ permissions:
   contents: read
   copilot-requests: write  
 env:
-  COPILOT_GITHUB_PAT_TOKEN: ${{ secrets.GH_TOKEN }}
+  COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   DD_MCP_TOKEN: ${{ secrets.DD_PAT }}
 jobs:
   image-build-errors:
