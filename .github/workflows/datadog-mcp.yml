@@ -1,0 +1,47 @@
+name: dd-mcp-query
+
+on:
+  workflow_call:
+    outputs:
+      result:
+        value: ${{ jobs.dd-mcp.outputs.result }}  
+permissions:
+  id-token: write
+  contents: read
+  copilot-requests: write  
+env:
+  COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  DD_MCP_TOKEN: ${{ secrets.DD_PAT }}
+jobs:
+  dd-mcp:
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.dd.outputs.result }}    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v7
+
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+      - name: Add Datadog MCP server
+        run: |
+          copilot mcp add --transport http \
+            --header "Authorization: Bearer ${DD_MCP_TOKEN}" \
+            datadog \
+            "https://mcp.datadoghq.eu/v1/mcp?toolsets=core,apm"
+      - name: Run Copilot query and print output
+        id: dd
+        # env:
+        #   COPILOT_GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        #   COPILOT_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        #   GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -e
+          OUTPUT=$(copilot -p "Always use the aggirigated span. Can you comapre the error, cpu, memory utilization between current version with the previous version of  mrportal-cps-mw in uat env. after that please share your verdit that we should proceed with this latest tag rollout to production, also share a comparison between two tags")
+          echo "$OUTPUT"
+          echo "$OUTPUT" >> "$GITHUB_STEP_SUMMARY"
