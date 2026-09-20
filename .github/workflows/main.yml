@@ -19,7 +19,7 @@ jobs:
           echo "this is image build"
 
   dd-mcp:
-    uses: ./.github/workflows/test.yml
+    uses: ./.github/workflows/datadog-mcp.yml
 
   # check-errors:
   #   needs: image-build-errors
