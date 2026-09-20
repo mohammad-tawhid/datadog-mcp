@@ -5,6 +5,7 @@ on:
     outputs:
       result:
         value: ${{ jobs.dd-mcp.outputs.result }}  
+  workflow_dispatch:
 permissions:
   id-token: write
   contents: read
