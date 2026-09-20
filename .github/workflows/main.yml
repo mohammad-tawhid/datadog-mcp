@@ -11,7 +11,7 @@ env:
   COPILOT_GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   DD_MCP_TOKEN: ${{ secrets.DD_PAT }}
 jobs:
-  image-build-errors:
+  image-build:
     runs-on: ubuntu-latest
     steps:
       - name: image build
@@ -19,7 +19,9 @@ jobs:
           echo "this is image build"
 
   dd-mcp:
+    needs: image-build
     uses: ./.github/workflows/datadog-mcp.yml
+    secrets: inherit
 
   # check-errors:
   #   needs: image-build-errors
